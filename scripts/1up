@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+mode="${1:-move}"
+shift || true
+
+if [ "$#" -eq 0 ]; then
+  notify-send "1UP" "No files selected."
+  exit 1
+fi
+
+copy_to_clipboard() {
+  if command -v qdbus6 >/dev/null 2>&1; then
+    qdbus6 org.kde.klipper /klipper org.kde.klipper.klipper.setClipboardContents "$1"
+  elif command -v qdbus >/dev/null 2>&1; then
+    qdbus org.kde.klipper /klipper org.kde.klipper.klipper.setClipboardContents "$1"
+  elif command -v wl-copy >/dev/null 2>&1; then
+    printf '%s' "$1" | wl-copy
+  elif command -v xclip >/dev/null 2>&1; then
+    printf '%s' "$1" | xclip -selection clipboard
+  else
+    notify-send "1UP" "No clipboard tool found."
+    exit 1
+  fi
+}
+
+case "$mode" in
+  move)
+    for f in "$@"; do
+      mv -n -- "$f" ../
+    done
+    notify-send "1UP" "Sent selected item(s) up one directory."
+    ;;
+
+  locations)
+    paths=""
+    for f in "$@"; do
+      paths="${paths}$(realpath -- "$f")"$'\n'
+    done
+    copy_to_clipboard "${paths%$'\n'}"
+    notify-send "1UP" "Copied selected location(s)."
+    ;;
+esac

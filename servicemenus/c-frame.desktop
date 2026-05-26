@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=video/mp4;video/x-matroska;video/webm;video/quicktime;video/x-msvideo;video/mpeg;video/x-ms-wmv;video/x-flv;
+Actions=cframe;
+X-KDE-Priority=TopLevel
+
+[Desktop Action cframe]
+Name=c-frame
+Icon=edit-copy
+Exec=/home/big-bro/.local/bin/c-frame "%f"

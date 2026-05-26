@@ -1,0 +1,26 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=inode/directory;
+Actions=mounts;space;dirs;files;
+X-KDE-Submenu=SpacEr
+
+[Desktop Action mounts]
+Name=Show Mounts
+Icon=drive-harddisk
+Exec=sh -c '$HOME/.local/bin/spacer mounts'
+
+[Desktop Action space]
+Name=Show Available Space
+Icon=drive-harddisk
+Exec=sh -c '$HOME/.local/bin/spacer space'
+
+[Desktop Action dirs]
+Name=Show 10 Biggest Directories
+Icon=folder
+Exec=sh -c '$HOME/.local/bin/spacer dirs'
+
+[Desktop Action files]
+Name=Show 10 Biggest Files
+Icon=text-x-generic
+Exec=sh -c '$HOME/.local/bin/spacer files'

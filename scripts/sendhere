@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+set -e
+
+files=("$@")
+
+if [ ${#files[@]} -eq 0 ]; then
+  kdialog --error "No files selected."
+  exit 1
+fi
+
+dest="$(kdialog --getexistingdirectory "$HOME" --title "SendHere: choose destination")"
+
+if [ -z "$dest" ]; then
+  exit 0
+fi
+
+for f in "${files[@]}"; do
+  clean="${f#file://}"
+  cp -r "$clean" "$dest/"
+done
+
+kdialog --passivepopup "Sent ${#files[@]} item(s) to $dest" 3

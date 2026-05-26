@@ -1,0 +1,56 @@
+#!/usr/bin/env bash
+
+mode="${1:-}"
+
+case "$mode" in
+  mounts)
+    konsole --hold -e bash -c '
+clear
+echo "=== Mounts ==="
+echo
+lsblk -o NAME,SIZE,FSTYPE,LABEL,MOUNTPOINTS
+echo
+echo "Mount with:"
+echo "udisksctl mount -b /dev/sdX1"
+echo
+exec bash
+'
+    ;;
+
+  space)
+    konsole --hold -e bash -c '
+clear
+echo "=== Available Space ==="
+echo
+df -h -x squashfs -x tmpfs -x devtmpfs -x efivarfs --output=source,size,used,avail,pcent,target 2>/dev/null | awk '!seen[$1]++'
+echo
+exec bash
+'
+    ;;
+
+  dirs)
+    konsole --hold -e bash -c '
+clear
+echo "=== 10 Biggest Directories ==="
+echo
+du -xh ~ 2>/dev/null | sort -rh | head -n 10
+echo
+exec bash
+'
+    ;;
+
+  files)
+    konsole --hold -e bash -c '
+clear
+echo "=== 10 Biggest Files ==="
+echo
+find ~ -type f -printf "%s %p\n" 2>/dev/null | sort -nr | head -n 10 | awk '"'"'{
+size=$1
+$1=""
+printf "%.2f GB%s\n", size/1024/1024/1024, $0
+}'"'"'
+echo
+exec bash
+'
+    ;;
+esac

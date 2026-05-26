@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+state="$HOME/.local/state/n0drag/held.txt"
+mkdir -p "$(dirname "$state")"
+
+mode="${1:-help}"
+shift || true
+
+notify() { notify-send "n0drag" "$1"; }
+
+target_dir() {
+  if [ "$#" -gt 0 ] && [ -d "$1" ]; then
+    realpath -- "$1"
+  else
+    pwd
+  fi
+}
+
+case "$mode" in
+  pickup)
+    [ "$#" -gt 0 ] || { notify "No files selected."; exit 1; }
+    : > "$state"
+    for f in "$@"; do realpath -- "$f" >> "$state"; done
+    notify "Picked up $# item(s)."
+    ;;
+
+  move-here)
+    dest="$(target_dir "${1:-}")"
+    [ -s "$state" ] || { notify "Nothing held."; exit 1; }
+    while IFS= read -r f; do mv -n -- "$f" "$dest/"; done < "$state"
+    : > "$state"
+    notify "Moved held item(s) here."
+    ;;
+
+  copy-here)
+    dest="$(target_dir "${1:-}")"
+    [ -s "$state" ] || { notify "Nothing held."; exit 1; }
+    while IFS= read -r f; do cp -rn -- "$f" "$dest/"; done < "$state"
+    notify "Copied held item(s) here."
+    ;;
+
+  link-here)
+    dest="$(target_dir "${1:-}")"
+    [ -s "$state" ] || { notify "Nothing held."; exit 1; }
+    while IFS= read -r f; do ln -s -- "$f" "$dest/"; done < "$state"
+    notify "Linked held item(s) here."
+    ;;
+
+  clear)
+    : > "$state"
+    notify "Cleared."
+    ;;
+esac

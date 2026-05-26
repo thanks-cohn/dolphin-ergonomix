@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Service
+MimeType=all/all;
+Actions=sendhere;
+X-KDE-ServiceTypes=KonqPopupMenu/Plugin
+Icon=folder-send
+
+[Desktop Action sendhere]
+Name=SendHere
+Icon=folder-send
+Exec=/home/big-bro/Documents/scripts/sendhere/sendhere %U

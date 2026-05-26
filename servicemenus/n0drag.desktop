@@ -1,0 +1,31 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=all/allfiles;inode/directory;
+Actions=pickup;moveHere;copyHere;linkHere;clear;
+X-KDE-Submenu=n0drag
+
+[Desktop Action pickup]
+Name=Pick Up
+Icon=edit-copy
+Exec=sh -c '$HOME/.local/bin/n0drag pickup "$@"' sh %F
+
+[Desktop Action moveHere]
+Name=Move Here
+Icon=go-jump
+Exec=sh -c '$HOME/.local/bin/n0drag move-here "$1"' sh %f
+
+[Desktop Action copyHere]
+Name=Copy Here
+Icon=edit-copy
+Exec=sh -c '$HOME/.local/bin/n0drag copy-here "$1"' sh %f
+
+[Desktop Action linkHere]
+Name=Link Here
+Icon=insert-link
+Exec=sh -c '$HOME/.local/bin/n0drag link-here "$1"' sh %f
+
+[Desktop Action clear]
+Name=Clear
+Icon=edit-clear
+Exec=sh -c '$HOME/.local/bin/n0drag clear'

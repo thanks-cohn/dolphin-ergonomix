@@ -1,0 +1,16 @@
+[Desktop Entry]
+Type=Service
+ServiceTypes=KonqPopupMenu/Plugin
+MimeType=all/allfiles;inode/directory;
+Actions=move;locations;
+X-KDE-Submenu=1UP
+
+[Desktop Action move]
+Name=Send Up One Directory
+Icon=go-up
+Exec=sh -c '$HOME/.local/bin/1up move "$@"' sh %F
+
+[Desktop Action locations]
+Name=Copy Location(s)
+Icon=edit-copy
+Exec=sh -c '$HOME/.local/bin/1up locations "$@"' sh %F
